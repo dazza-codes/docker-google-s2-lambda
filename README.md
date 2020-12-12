@@ -2,7 +2,7 @@
 # Docker build for google S2
 
 The `Dockerfile` is designed to build and install google S2 geometry into an
-`amazonlinux` OS, using the same path prefixes used in AWS lambda.
+AWS Lambda runtime, using the same path prefixes used in AWS lambda.
 
 The docker image built is not intended to be published or used directly. The
 purpose of the build is to extract an AWS lambda layer as a packaged .zip
@@ -16,7 +16,10 @@ See also:
 # Getting Started
 
 This assumes that `git`, `docker` and `make` are installed and functioning as
-expected.
+expected.  A python version is detected in the current runtime - create a
+virtual env with a required python version to build against that version
+if a lambci docker image is available for it - the following assumes
+python 3.6 is used.
 
 ```shell script
 git clone https://github.com/dazza-codes/docker-google-s2-lambda.git
@@ -31,33 +34,12 @@ The docker build uses AWS lambda installation paths for python and
 the extra package for s2geometry, i.e.
 
 ```text
-opt/python/include/s2
 opt/python/lib/libs2.so
-opt/python/lib/libs2testing.a
 opt/python/lib/python3.6/site-packages/pywraps2.py
 opt/python/lib/python3.6/site-packages/_pywraps2.so
 ```
 
-The initial test that it works is simply:
-
-```shell script
-# AWS lambda uses /var/lang as a python prefix, i.e.
-export PY3_EXE=/var/lang/bin/python3.6
-export PY3_LIB=/var/lang/lib/python3.6
-export PY3_INC=/var/lang/include/python3.6m
-
-# Match the AWS lambda environment for layer packages
-export LD_LIBRARY_PATH="/opt/python/lib"
-export PYTHONPATH="/opt/python/lib/python3.6/site-packages:/opt/python"
-
-# Or add the paths like so:
-#>>> import sys
-#>>> sys.path.append('/opt/python/lib/python3.6/site-packages')
-#>>> sys.path.append('/opt/python')
-#>>> import pywraps2 as s2
-
-/var/lang/bin/python3.6 -c 'import pywraps2 as s2'
-```
+The initial test that it works is simply to import it.
 
 # LICENSE
 
