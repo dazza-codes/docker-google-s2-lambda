@@ -107,8 +107,9 @@ RUN cmake \
     && make
 RUN make install/strip/fast
 
-ENV LD_LIBRARY_PATH "${S2_PREFIX}/lib"
-RUN python -c 'import pywraps2 as s2; print(s2)'
+# Copy the shared lib into a default LD_LIBRARY_PATH
+RUN cp /opt/python/lib/libs2.so  /var/lang/lib/  && \
+    python -c 'import pywraps2 as s2; print(s2)'
 
 COPY archive_package.sh .
 RUN ./archive_package.sh

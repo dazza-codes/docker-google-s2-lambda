@@ -19,27 +19,34 @@ This assumes that `git`, `docker` and `make` are installed and functioning as
 expected.  A python version is detected in the current runtime - create a
 virtual env with a required python version to build against that version
 if a lambci docker image is available for it - the following assumes
-python 3.6 is used.
+python 3.7 is used.
 
 ```shell script
 git clone https://github.com/dazza-codes/docker-google-s2-lambda.git
 cd docker-google-s2-lambda
 make build
 make extract
-unzip -t py36_google_s2.zip
+unzip -t py37_google_s2.zip
 ```
 
-The `py36_google_s2.zip` archive should work as an AWS lambda layer.
+The `py37_google_s2.zip` archive should work as an AWS lambda layer.
 The docker build uses AWS lambda installation paths for python and
 the extra package for s2geometry, i.e.
 
-```text
-opt/python/lib/libs2.so
-opt/python/lib/python3.6/site-packages/pywraps2.py
-opt/python/lib/python3.6/site-packages/_pywraps2.so
+```
+$ unzip -l py37_google_s2.zip 
+Archive:  py37_google_s2.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+    41892  2020-12-12 12:25   var/lang/lib/python3.7/site-packages/pywraps2.py
+   732504  2020-12-12 12:25   var/lang/lib/python3.7/site-packages/_pywraps2.so
+  6840608  2020-12-12 12:51   var/lang/lib/libs2.so
+---------                     -------
+  7615004                     3 files
 ```
 
-The initial test that it works is simply to import it.
+The initial test that it works is simply to import it, without
+changes to the default AWS runtime ENV.
 
 # LICENSE
 
